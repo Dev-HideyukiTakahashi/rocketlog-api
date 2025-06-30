@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", // Define a versão do ECMAScript para a qual o código será compilado. "ES2022" garante suporte a recursos modernos do JavaScript.
+    "lib": ["ES2023"], // Especifica as bibliotecas que estarão disponíveis no ambiente de execução. "ES2023" inclui features mais recentes.
+
+    "paths": {
+      // Permite criar aliases para caminhos de módulos, facilitando importações absolutas.
+      // Por exemplo, "@/*": ["./src/*"] permite importar "import { x } from '@/modules/x'" em vez de "import { x } from '../../src/modules/x'".
+      "@/*": ["./src/*"]
+    },
+
+    "module": "node16", // Define o sistema de módulos a ser usado. "node16" é recomendado para versões modernas do Node.js.
+    "esModuleInterop": true, // Habilita a interoperabilidade entre módulos CommonJS e ES Modules, permitindo "import x from 'y'" para módulos CommonJS.
+    "forceConsistentCasingInFileNames": true, // Garante que as importações e referências a arquivos sigam a mesma capitalização para evitar problemas em sistemas de arquivos case-sensitive/insensitive.
+
+    "strict": true, // Habilita todas as opções rigorosas de verificação de tipo do TypeScript para garantir um código mais seguro e robusto.
+    "skipLibCheck": true // Ignora a verificação de tipo em todos os arquivos de declaração (.d.ts) das bibliotecas, acelerando a compilação e evitando erros de tipo em bibliotecas de terceiros.
+  }
+}
