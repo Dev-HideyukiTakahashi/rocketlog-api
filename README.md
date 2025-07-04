@@ -51,3 +51,111 @@
   }
 }
 ```
+
+---
+
+#### Tratando exceptions
+
+- `npm i express-async-errors`
+
+  - Este pacote estende o Express para permitir que erros assíncronos (erros lançados dentro de funções async em rotas) sejam capturados pelo middleware de tratamento de erros padrão do Express. Sem ele, esses erros poderiam travar a aplicação, pois não seriam propagados corretamente.
+
+- `npm i zod`
+  - Zod é uma biblioteca de validação de esquemas TypeScript-first. Ela permite definir a forma dos seus dados (objetos, strings, números, etc.) e validar se os dados recebidos (por exemplo, no corpo de uma requisição) correspondem a essa forma. Isso é crucial para garantir a integridade dos dados que sua API processa e retorna.
+
+* Criando middleware exemplo (error-handling.ts)
+
+```javascript
+import { AppError } from '@/utils/AppError'; // Importa nossa classe de erro personalizada
+import { NextFunction, Request, Response } from 'express'; // Tipos do Express para o middleware
+
+import { ZodError } from 'zod'; // Tipo de erro específico do Zod para validação
+
+export function errorHandling(
+  error: any, // O erro que foi capturado
+  request: Request, // Objeto de requisição do Express
+  response: Response, // Objeto de resposta do Express
+  next: NextFunction, // Função para passar o controle para o próximo middleware (se houver)
+) {
+  // Verifica se o erro é uma instância da nossa classe de erro personalizada 'AppError'.
+  // Estes são erros de negócio esperados, como "usuário não encontrado" ou "dados inválidos".
+  if (error instanceof AppError) {
+    return response.status(error.statusCode).json({ message: error.message });
+  }
+
+  // Verifica se o erro é uma instância de 'ZodError', indicando um problema de validação de dados.
+  // Isso acontece quando os dados de entrada não correspondem ao esquema Zod definido.
+  if (error instanceof ZodError) {
+    return response.status(400).json({
+      message: 'validation error', // Mensagem genérica para erros de validação
+      issues: error.format(), // Detalhes formatados do erro de validação fornecidos pelo Zod
+    });
+  }
+
+  // Se o erro não for nem 'AppError' nem 'ZodError', trata-se de um erro inesperado do servidor.
+  // Retorna um status 500 (Internal Server Error) com a mensagem do erro.
+  // Em produção, é aconselhável logar o erro completo e retornar uma mensagem mais genérica ao cliente.
+  return response.status(500).json({ message: error.message });
+}
+```
+
+- Class auxiliar para error (AppError.ts)
+
+```javascript
+export class AppError {
+  message: string;
+  statusCode: number;
+
+  constructor(message: string, statusCode: number = 400) {
+    this.message = message;
+    this.statusCode = statusCode;
+  }
+}
+```
+
+---
+
+#### Exemplo docker-compose (postgresql)
+
+- docker-compose.yml
+
+```yml
+services:
+  posgres:
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rocketlog
+```
+
+---
+
+#### Prisma
+
+- `npm i prisma -D`
+
+  - Instala o prisma em modo dev
+
+- `npx prisma init --datasource-provider postgresql`
+  - Inicia as configurações do prisma orm com postgresql
+
+* Após iniciar a config acima é criado a pasta prisma e o file .env
+  - Exemplo arquivo .env
+    ```javascript
+    DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/rocketlog?schema=public';
+    ```
+  * Exemplo package.json(script) para garantir carregar o .env
+  ```javascript
+    "scripts": {
+      "dev": "tsx watch --env-file .env ./src/server.ts"
+    },
+  ```
+* Executando a migration com as tabelas
+
+  - `npx prisma migrate dev`
+
+* Executando prisma studio
+  - `npx prisma studio`
