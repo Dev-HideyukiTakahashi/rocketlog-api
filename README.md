@@ -159,3 +159,18 @@ services:
 
 * Executando prisma studio
   - `npx prisma studio`
+
+---
+
+#### Bcrypt
+
+- `npm i bcrypt`
+- `npm i @types/bcrypt -D`
+
+Exemplo:
+
+```javascript
+const hashPassword = await hash(password, 8);
+
+console.log(hashPassword); // out: $2b$08$WsoacHRifyFpUY0sdhSI3Ov29nGCvsNkcVd8buK7MFJ00KRQTmO96
+```
