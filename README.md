@@ -174,3 +174,28 @@ const hashPassword = await hash(password, 8);
 
 console.log(hashPassword); // out: $2b$08$WsoacHRifyFpUY0sdhSI3Ov29nGCvsNkcVd8buK7MFJ00KRQTmO96
 ```
+
+---
+
+#### JWT
+
+- `npm i jsonwebtoken`
+- `npm i @types/jsonwebtoken`
+
+Exemplo:
+
+- authConfig:
+
+```javascript
+export const authConfig = {
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: '1d',
+  },
+};
+```
+
+- .env
+  `JWT_SECRET=mysecret`
+
+---
