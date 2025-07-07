@@ -145,7 +145,7 @@ services:
 * Após iniciar a config acima é criado a pasta prisma e o file .env
   - Exemplo arquivo .env
     ```javascript
-    DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/rocketlog?schema=public';
+    DATABASE_URL=postgresql://postgres:postgres@localhost:5434/rocketlog?schema=public
     ```
   * Exemplo package.json(script) para garantir carregar o .env
   ```javascript
