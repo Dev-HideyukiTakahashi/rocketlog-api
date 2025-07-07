@@ -199,3 +199,62 @@ export const authConfig = {
   `JWT_SECRET=mysecret`
 
 ---
+
+#### Autenticação
+
+- Mesclando a interface Request do express
+
+```javascript
+declare namespace Express {
+  export interface Request {
+    user?: {
+      id: string;
+      role: string;
+    };
+  }
+}
+```
+
+- middleware ensureAuthenticated
+
+```javascript
+import { authConfig } from '@/configs/auth';
+import { AppError } from '@/utils/AppError';
+import { NextFunction, Request, Response } from 'express';
+import { verify } from 'jsonwebtoken';
+
+interface TokenPayload {
+  role: string;
+  sub: string;
+}
+
+export function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
+  try {
+    const authHeader = request.headers.authorization;
+
+    if (!authHeader) {
+      throw new AppError('JWT token not found', 401);
+    }
+
+    const [, token] = authHeader.split(' ');
+    const { role, sub: user_id } = verify(token, authConfig.jwt.secret) as TokenPayload;
+
+    request.user = {
+      id: user_id,
+      role,
+    };
+
+    return next();
+  } catch (error) {
+    throw new AppError('Invalid JWT token', 401);
+  }
+}
+```
+
+- Automatizando token no insomnia
+  - ctrl + espaço e escolher `Response Body Attribute`
+  - Escolher a Request onde está o 'login' que responde com token
+  - Em filter colocar `$` para listar o payload
+    - Exemplo `$.token` para retornar apenas o token
+
+---
