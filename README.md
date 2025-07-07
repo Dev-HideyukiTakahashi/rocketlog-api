@@ -200,7 +200,7 @@ export const authConfig = {
 
 ---
 
-#### Autenticação
+#### Autenticação / Autorização
 
 - Mesclando a interface Request do express
 
@@ -215,7 +215,7 @@ declare namespace Express {
 }
 ```
 
-- middleware ensureAuthenticated
+- middleware Autenticação
 
 ```javascript
 import { authConfig } from '@/configs/auth';
@@ -252,9 +252,31 @@ export function ensureAuthenticated(request: Request, response: Response, next: 
 ```
 
 - Automatizando token no insomnia
+
   - ctrl + espaço e escolher `Response Body Attribute`
   - Escolher a Request onde está o 'login' que responde com token
   - Em filter colocar `$` para listar o payload
     - Exemplo `$.token` para retornar apenas o token
+
+- middleware Autorização
+
+```javascript
+import { AppError } from '@/utils/AppError';
+import { NextFunction, Request, Response } from 'express';
+
+export function verifyUserAuthorization(role: string[]) {
+  return (request: Request, response: Response, next: NextFunction) => {
+    if (!request.user) {
+      throw new AppError('Unauthorized', 401);
+    }
+
+    if (!role.includes(request.user.role)) {
+      throw new AppError('Unauthorized', 401);
+    }
+
+    return next();
+  };
+}
+```
 
 ---
