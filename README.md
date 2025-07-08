@@ -285,3 +285,6 @@ export function verifyUserAuthorization(role: string[]) {
 
 - `npm i jest @types/jest ts-jest@ -D`
 - `npm i supertest @types/supertest -D `
+
+- Configurando o Jest
+  - `npx jest --init `
