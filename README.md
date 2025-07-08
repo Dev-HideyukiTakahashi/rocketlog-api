@@ -280,3 +280,8 @@ export function verifyUserAuthorization(role: string[]) {
 ```
 
 ---
+
+#### Testes
+
+- `npm i jest @types/jest ts-jest@ -D`
+- `npm i supertest @types/supertest -D `
