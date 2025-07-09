@@ -306,3 +306,20 @@ export function verifyUserAuthorization(role: string[]) {
 
 - package.json, exemplo de script start depois da build
   - `"start": "node build/server.js"`
+
+---
+
+#### Deploy no render
+
+- Build Command
+  Render runs this command to build your app before each deploy.
+
+  - `npm install && npm run build && npx prisma migrate deploy`
+
+- Start Command
+  Render runs this command to start your app with each deploy.
+
+  - `npm start`
+
+- Site MD5 hash generator para criar hash
+  - Bom para secrets

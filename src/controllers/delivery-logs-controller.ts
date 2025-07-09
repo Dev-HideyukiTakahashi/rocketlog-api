@@ -55,6 +55,10 @@ export class DeliveryLogsController {
       },
     });
 
+    if (!delivery) {
+      throw new AppError('delivery not found', 404);
+    }
+
     // verifica se delivery é do próprio usuário
     const isCustomer = request.user?.role === 'customer' ? true : false;
     const isDifferentUserId = request.user?.id !== delivery?.userId ? true : false;
