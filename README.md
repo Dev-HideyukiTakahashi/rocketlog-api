@@ -323,3 +323,12 @@ export function verifyUserAuthorization(role: string[]) {
 
 - Site MD5 hash generator para criar hash
   - Bom para secrets
+
+---
+
+#### Gerenciamento de dependências
+
+- `npm out `
+  - Verifica possíveis atualizações
+- `npx npm-check-updates --interactive --format group`
+  - Menu interativo no terminal para atualizar, separando por grupos
