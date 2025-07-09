@@ -289,3 +289,16 @@ export function verifyUserAuthorization(role: string[]) {
 
 - Configurando o Jest
   - `npx jest --init `
+
+---
+
+#### Build
+
+- `npm i tsup -D `
+
+  - O tsup é um empacotador (bundler) de projetos TypeScript e JavaScript. Ele é usado para compilar e empacotar o código de forma rápida e simples
+
+- package.json, exemplo script de build
+  - `"build": "tsup src"`
+  - `"build": "tsup src --out-dir build"`
+    - Alterando o nome padrão de 'dist' para 'build'
