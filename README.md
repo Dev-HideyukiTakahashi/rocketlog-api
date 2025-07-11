@@ -59,6 +59,7 @@
 - `npm i express-async-errors`
 
   - Este pacote estende o Express para permitir que erros assíncronos (erros lançados dentro de funções async em rotas) sejam capturados pelo middleware de tratamento de erros padrão do Express. Sem ele, esses erros poderiam travar a aplicação, pois não seriam propagados corretamente.
+  - Express 5+, o suporte a funções async com next(err) está nativo, não é mais necessário
 
 - `npm i zod`
   - Zod é uma biblioteca de validação de esquemas TypeScript-first. Ela permite definir a forma dos seus dados (objetos, strings, números, etc.) e validar se os dados recebidos (por exemplo, no corpo de uma requisição) correspondem a essa forma. Isso é crucial para garantir a integridade dos dados que sua API processa e retorna.
